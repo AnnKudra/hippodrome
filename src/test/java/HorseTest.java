@@ -58,4 +58,17 @@ public class HorseTest {
         mockedHorse.verify(()->Horse.getRandomDouble(0.2,0.9));
         }
     }
+    @ParameterizedTest
+    @ValueSource(doubles = {0.2,0.3,0.5})
+    void moveSetDistanceValue(double value){
+        try (MockedStatic<Horse> mockedHorse = Mockito.mockStatic(Horse.class)){
+            mockedHorse.when(()-> Horse.getRandomDouble(0.2,0.9)).thenReturn(value);
+
+            Horse horse = new Horse("HorseName", 20, 30);
+            horse.move();
+            double expected = 30+20*value;
+            assertEquals(expected,horse.getDistance()); 
+
+        }
+    }
 }
